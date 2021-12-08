@@ -27,7 +27,7 @@ public class MobDamageEvent implements Listener {
             event.setDamage(event.getDamage() * settings.damage_times);
         }
 
-        if (attacker_type == EntityType.PLAYER && defender_type != EntityType.PLAYER) {//if the entity isn't able to attack pillar players on it's own
+        if (attacker_type == EntityType.PLAYER && defender_type != EntityType.PLAYER) {//if the entity isn't able to attack pillar players on its own
 
             Location defender_location = defender.getLocation();
             attacker.getServer().broadcastMessage("goes not the player");
