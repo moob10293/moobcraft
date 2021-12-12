@@ -32,6 +32,7 @@ public class Main extends JavaPlugin {
         getServer().getPluginManager().registerEvents(new FoodEvent(), this);//using the plugins
         getServer().getPluginManager().registerEvents(new MobDamageEvent(), this);
         getServer().getPluginManager().registerEvents(new MobSpawnEvent(), this);
+        getServer().getPluginManager().registerEvents(new DamageEvent(), this);
         getServer().getPluginManager().registerEvents(new BlockEvent(listOfPlayerBlocks), this);
         getServer().getPluginManager().registerEvents(new PlayerSpawnEvent(this), this);
         Objects.requireNonNull(this.getCommand("customtag")).setExecutor(new CommandCustomTag(this));

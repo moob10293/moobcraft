@@ -1,11 +1,21 @@
 package me.moob.hardersurvival;
 
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.NamespacedKey;
 import org.bukkit.World;
+import org.bukkit.attribute.Attribute;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
+import org.bukkit.boss.BossBar;
+import org.bukkit.boss.KeyedBossBar;
 import org.bukkit.entity.*;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
+
+import java.util.Iterator;
+import java.util.Objects;
 
 //this class handles things related to damage.
 //this class deals with spawning skeletons/spiders in response to players attacking from 3 blocks up,
@@ -17,7 +27,7 @@ public class MobDamageEvent implements Listener {
     public void whenDamage(EntityDamageByEntityEvent event) {
 
         Entity attacker = event.getDamager();
-        Entity defender = event.getEntity();
+        LivingEntity defender = ((LivingEntity) event.getEntity());
         World world = defender.getWorld();
         Settings settings = new Settings();
         EntityType attacker_type = attacker.getType();
@@ -25,6 +35,25 @@ public class MobDamageEvent implements Listener {
 
         if (attacker instanceof Monster && attacker_type != EntityType.PLAYER) {//double damage for every entity except for the player
             event.setDamage(event.getDamage() * settings.damage_times);
+        }
+
+        if (attacker_type == EntityType.PLAYER) {
+            String bossText;
+            double maxHearts = Objects.requireNonNull(defender.getAttribute(Attribute.GENERIC_MAX_HEALTH)).getValue()/2;
+            if (defender.getCustomName() != null) {
+                bossText = defender.getCustomName() + "hearts: " + defender.getHealth()/2 + "/" + maxHearts;
+            } else {
+                bossText = defender_type + "hearts: " + defender.getHealth() / 2 + "/" + maxHearts;
+            }
+            BossBar bossBar = Bukkit.createBossBar(bossText, BarColor.RED, BarStyle.SOLID);
+            //remove other heart boss bars
+            for (Iterator<KeyedBossBar> it = Bukkit.getBossBars(); it.hasNext(); ) {
+                BossBar bar = it.next();
+                if (bar.getPlayers().contains((Player) attacker)) {
+                    bar.removePlayer((Player) attacker);
+                }
+            }
+            bossBar.addPlayer((Player) attacker);
         }
 
         if (attacker_type == EntityType.PLAYER && defender_type != EntityType.PLAYER) {//if the entity isn't able to attack pillar players on its own

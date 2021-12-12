@@ -22,16 +22,18 @@ public class CommandCustomTag implements CommandExecutor {
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
         if (args.length == 4){
-            Player player = Bukkit.getPlayerExact(args[0]);
+            Player player = Bukkit.getPlayer(args[0]);
             NamespacedKey namespacedKey = new NamespacedKey(plugin,args[1]);
-            if (player != null){
-                if (Objects.equals(args[2], "int")){
-                    player.getPersistentDataContainer().set(namespacedKey, PersistentDataType.INTEGER, Integer.parseInt(args[3]));
-                    return true;
-                } else if (Objects.equals(args[2], "byte")) {
-                    player.getPersistentDataContainer().set(namespacedKey, PersistentDataType.BYTE, (byte) Integer.parseInt(args[3]));
-                    return true;
-                }
+            assert player != null;
+            player.sendMessage("format right");
+            if (Objects.equals(args[2], "int")){
+                player.getPersistentDataContainer().set(namespacedKey, PersistentDataType.INTEGER, Integer.parseInt(args[3]));
+                player.sendMessage("success");
+                return true;
+            } else if (Objects.equals(args[2], "byte")) {
+                player.getPersistentDataContainer().set(namespacedKey, PersistentDataType.BYTE, (byte) Integer.parseInt(args[3]));
+                player.sendMessage("success");
+                return true;
             }
         }
     return false;

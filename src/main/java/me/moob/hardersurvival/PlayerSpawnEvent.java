@@ -26,12 +26,14 @@ public class PlayerSpawnEvent implements Listener {
         NamespacedKey kitKey = new NamespacedKey(plugin, "receivedkit");
         NamespacedKey attacksSurvived = new NamespacedKey(plugin, "attacksSurvived");
         NamespacedKey isFightingAttack =  new NamespacedKey(plugin, "isfightingattack");
+        event.getPlayer().sendMessage("you're here");
         if (equalsOrDoesntHaveTag(playerPDC,kitKey,PersistentDataType.BYTE,(byte) 0)) {
             Player player = event.getPlayer();
             giveItem(player, Material.OAK_LOG, 32);
             giveItem(player, Material.COBBLESTONE, 64);
             giveItem(player, Material.COAL, 8);
             giveItem(player, Material.BREAD, 64);
+            player.sendMessage("here you go");
             playerPDC.set(kitKey, PersistentDataType.BYTE, (byte) 1);
         }if (equalsOrDoesntHaveTag(playerPDC, attacksSurvived, PersistentDataType.INTEGER, null)){
             playerPDC.set(attacksSurvived, PersistentDataType.INTEGER, 0);
